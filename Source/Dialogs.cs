@@ -1,0 +1,13 @@
+using System.Windows;
+using System.Windows.Controls;
+namespace MooView;
+
+public static class Dialogs
+{
+    static (Window, StackPanel) Make(Window owner, string title) { var w = new Window { Owner = owner, Title = title, Width = 520, SizeToContent = SizeToContent.Height, MaxHeight = 700, WindowStartupLocation = WindowStartupLocation.CenterOwner, ResizeMode = ResizeMode.NoResize }; var p = new StackPanel { Margin = new Thickness(22) }; w.Content = p; return (w, p); }
+    public static string? Ask(Window owner, string title, string description, string value) { var (w, p) = Make(owner, title); p.Children.Add(new TextBlock { Text = description, TextWrapping = TextWrapping.Wrap, Margin = new Thickness(4, 4, 4, 14) }); var input = new TextBox { Text = value }; p.Children.Add(input); var b = new Button { Content = L10n.T("OK"), IsDefault = true, Margin = new Thickness(3, 16, 3, 3) }; b.Click += (_, _) => w.DialogResult = true; p.Children.Add(b); w.Loaded += (_, _) => { input.Focus(); input.SelectAll(); }; return w.ShowDialog() == true ? input.Text : null; }
+    public static int Choose(Window owner, string title, string description, string[] values) { var (w, p) = Make(owner, title); p.Children.Add(new TextBlock { Text = description, Margin = new Thickness(4, 4, 4, 14) }); var combo = new ComboBox { ItemsSource = values, SelectedIndex = 0 }; p.Children.Add(combo); var b = new Button { Content = L10n.T("Continue"), IsDefault = true }; b.Click += (_, _) => w.DialogResult = true; p.Children.Add(b); return w.ShowDialog() == true ? combo.SelectedIndex : -1; }
+    public static bool Confirm(Window owner, string title, string text) { var (w, p) = Make(owner, title); p.Children.Add(new TextBox { Text = text, IsReadOnly = true, TextWrapping = TextWrapping.Wrap, MaxHeight = 460, VerticalScrollBarVisibility = ScrollBarVisibility.Auto }); var row = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right }; var cancel = new Button { Content = L10n.T("Cancel"), IsCancel = true }; var ok = new Button { Content = L10n.T("Apply") }; ok.Click += (_, _) => w.DialogResult = true; row.Children.Add(cancel); row.Children.Add(ok); p.Children.Add(row); return w.ShowDialog() == true; }
+    public static void Info(Window owner, string title, string text) { var (w, p) = Make(owner, title); p.Children.Add(new TextBox { Text = text, IsReadOnly = true, TextWrapping = TextWrapping.Wrap, MaxHeight = 540, VerticalScrollBarVisibility = ScrollBarVisibility.Auto }); var b = new Button { Content = L10n.T("Close"), IsCancel = true }; p.Children.Add(b); w.ShowDialog(); }
+}
+
