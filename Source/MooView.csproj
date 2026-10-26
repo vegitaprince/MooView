@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType><TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF><Nullable>enable</Nullable><ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>MooView</AssemblyName><Version>1.2.0</Version><Product>MooView</Product><Description>이미지 뷰어 · GIF · 편집</Description>
+    <DebugType>none</DebugType><ApplicationManifest>app.manifest</ApplicationManifest><ApplicationIcon>Assets/MooView.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup><Resource Include="Assets/MooView.ico" /><Resource Include="Assets/MooView.png" /></ItemGroup>
+</Project>
+
