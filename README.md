@@ -2,9 +2,20 @@
 
 A compact Windows image viewer with an icon-only interface, Korean/English UI, animated GIF playback, multi-image layouts, and a small layered editor.
 
-Windows 10/11 x64. Download **MooView-Setup-1.2.0-x64.exe** from [Releases](https://github.com/vegitaprince/MooView/releases/latest). The installer includes .NET; no separate runtime installation is required. A portable ZIP is also available.
+Windows 10/11 x64. Download **MooView-Setup-1.4.0-x64.exe** from [Releases](https://github.com/vegitaprince/MooView/releases/latest). The installer includes .NET; no separate runtime installation is required. A portable ZIP is also available.
 
 ## Features
+
+- Crisp UI: Per-Monitor V2 DPI awareness, pixel-aligned layout and display text formatting; no shadow effects rasterizing whole controls.
+- Drag the divider beside the file sidebar to resize it. Its width is saved between sessions.
+- Integrated minimize/maximize/close buttons. Drag the blank header to move; double-click it to maximize/restore. Native edge resizing remains available.
+- Multi-image navigation advances the complete visible group with no overlapping images. The last group shows only remaining images. This applies to wheel, keyboard, toolbar and slideshow.
+
+
+- Drag the displayed image or selected sidebar files to Explorer and other programs. When zoomed in, Ctrl+drag exports the file; ordinary drag pans the image. The destination decides whether to copy or move; Ctrl/Shift follow its drop behavior. MooView refreshes after files move out.
+- Drag the sidebar size slider from compact filenames to small or large thumbnails. Shift selects a range, Ctrl toggles individual files, Alt clears a file, and clicking a selected file again clears it after mouse release. Sweep the checkboxes to select or clear a range.
+- The editor has six muted color swatches and a shared pen/eraser diameter slider. Select text directly and use its handles to resize/rotate. Drawing a crop rectangle asks for confirmation immediately.
+- Click the repeat icon to turn slideshow looping on or off.
 
 - Wheel / Space image navigation; middle-click or F11 fullscreen, Esc to exit.
 - Fullscreen controls stay hidden during keyboard navigation and appear when the mouse moves near the top edge.
@@ -41,4 +52,3 @@ Run tests with `MooView.exe --ui-test`. This also runs the image-processing test
 텍스트를 추가한 뒤 선택 도구로 클릭하면 이동할 수 있습니다. 모서리 사각형은 크기, 위쪽 원은 회전을 조절합니다. 더블클릭으로 내용을 수정하고 Delete로 삭제할 수 있습니다. 지우개는 그린 선의 일부만 지우며 원본 이미지를 변경하지 않습니다.
 
 The current binaries are not code-signed. A publisher signing certificate is not included in this project.
-

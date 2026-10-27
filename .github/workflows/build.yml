@@ -27,4 +27,11 @@ jobs:
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create $env:GITHUB_REF_NAME artifacts/release/* --title "MooView $env:GITHUB_REF_NAME" --generate-notes
+        run: |
+          gh release view $env:GITHUB_REF_NAME *> $null
+          if ($LASTEXITCODE -eq 0) {
+            Write-Host 'Release already published; retaining its verified assets.'
+          } else {
+            gh release create $env:GITHUB_REF_NAME artifacts/release/* --title "MooView $env:GITHUB_REF_NAME" --generate-notes
+            if ($LASTEXITCODE) { throw 'Release creation failed' }
+          }

@@ -4,7 +4,7 @@
 #ifndef ReleaseDir
   #define ReleaseDir "..\artifacts\release"
 #endif
-#define AppVersion "1.2.0"
+#define AppVersion "1.4.0"
 [Setup]
 AppId={{D97071AE-3FF5-48D8-93CE-41BC4B769352}
 AppName=MooView
