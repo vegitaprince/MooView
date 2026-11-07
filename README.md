@@ -2,7 +2,7 @@
 
 A compact Windows image viewer with an icon-only interface, Korean/English UI, animated GIF playback, multi-image layouts, and a small layered editor.
 
-Windows 10/11 x64. Download **MooView-Setup-1.9.0-x64.exe** from [Releases](https://github.com/vegitaprince/MooView/releases/latest). The installer includes .NET; no separate runtime installation is required. A portable ZIP is also available.
+Windows 10/11 x64. Download **MooView-Setup-1.9.1-x64.exe** from [Releases](https://github.com/vegitaprince/MooView/releases/latest). The installer includes .NET; no separate runtime installation is required. A portable ZIP is also available.
 
 ## Updates
 
@@ -19,6 +19,10 @@ Portable updates stay portable: they use a manifest-bearing ZIP, replace only kn
 Preferences, available-release metadata and verified pending handoffs are scoped to the application folder under `%LOCALAPPDATA%\MooView`. This keeps copies in separate folders from inheriting each other's consent or packages. Existing viewer settings keep their existing location. Packages/helpers/logs are cached under `Updates` for retries and troubleshooting; interrupted Windows shutdown leaves the update pending. No GitHub login or token is required.
 
 Distribution builds use `--package-portable` to create `MooView.files.json` plus a portable marker and an archive containing exactly the declared payload. Both `MooView-Setup-X.Y.Z-x64.exe` and `MooView-Portable-X.Y.Z-x64.zip` must be attached to a stable `vX.Y.Z` release with GitHub asset digests. The build checks tag/project-version consistency. SHA-256 detects damaged downloads; it does not replace publisher code signing.
+
+## Moving the window
+
+Drag any noninteractive UI background, including the left rail gaps, sidebar labels/empty file list, bottom-bar filenames/status, and the space around a fitted image. A normal click stays a click until the Windows drag threshold is crossed. Double-click a draggable area to maximize/restore. Buttons, inputs, dropdowns, sliders, scrollbars, the sidebar divider, file rows/checkboxes, the displayed image and zoom minimap retain their normal gestures. Fullscreen never starts a window move. The introduction still dismisses on click.
 
 ## Appearance
 

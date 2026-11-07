@@ -1,3 +1,13 @@
+# MooView 1.9.1
+
+- Expanded window dragging from the top toolbar to all noninteractive UI backgrounds: left rail gaps, sidebar labels/empty list, footer filename/status, placeholder, and image letterboxing.
+- Hit-test the actual displayed image rectangle, including zoom and scrolling, so file export and image panning remain available on the image. The minimap, controls, list rows/checks and sidebar divider keep their own interactions.
+- Begin moving only after the system drag threshold; keep double-click maximize/restore, fullscreen behavior and introduction click dismissal.
+
+## 한국어
+
+- 상단뿐 아니라 버튼·입력 영역·실제 이미지 외의 빈 UI 공간을 드래그해 창을 이동할 수 있습니다.
+- 이미지 주변 여백도 이동에 사용할 수 있으며, 이미지 드래그·확대 이동·파일 선택·슬라이더 동작은 유지합니다.
 # MooView 1.9.0
 
 - Portable updates now select verified manifest-bearing ZIPs and retain portable mode. Only declared program/runtime files are replaced; user images/settings/unrelated files remain intact. No installer, shortcuts or file-association registration is invoked by the portable updater.
