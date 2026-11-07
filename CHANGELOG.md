@@ -1,3 +1,17 @@
+# MooView 1.9.0
+
+- Portable updates now select verified manifest-bearing ZIPs and retain portable mode. Only declared program/runtime files are replaced; user images/settings/unrelated files remain intact. No installer, shortcuts or file-association registration is invoked by the portable updater.
+- Added opt-in automatic download and apply on normal app exit, off by default. Packages, portable payloads and the independent helper are prepared while the app runs. Other windows are awaited without force closing. Automatic application does not restart the app; manual update-and-restart remains available.
+- Revalidate the latest consent after all windows exit, so disabling the option also stops an already waiting helper. Windows shutdown/restart defers application. Folder-scoped preferences/pending state prevent cross-updates between separate copies; verified staging survives app restarts.
+- Added ZIP traversal/link/duplicate/size/file-hash checks, same-volume backup transactions and rollback for replacement failures. Only unchanged obsolete files tracked by the previous manifest are removed.
+- Packaging generates the payload manifest and portable marker automatically. The installer excludes/removes that marker and accepts the project version from the build script; release tag/version mismatches fail the build.
+
+## 한국어
+
+- 포터블은 ZIP으로 프로그램 파일만 교체하며 포터블로 유지합니다. 사진·설정·기타 사용자 파일은 보존합니다.
+- 업데이트 창에서 자동 다운로드·종료 시 적용을 켤 수 있습니다. 기본은 꺼짐이며, 종료 후 적용해도 앱을 자동으로 다시 열지 않습니다.
+- 다른 창이 남아 있으면 기다리고, 자동 업데이트를 끄거나 Windows가 종료 중이면 적용을 보류합니다. 수동 업데이트 및 다시 시작도 유지합니다.
+- 1.8.0 이하 포터블은 이번 1.9.0 ZIP으로 한 번 교체해야 이후 포터블 업데이트가 가능합니다.
 # MooView 1.8.0
 
 - Replaced the top-left image/import lookalike with a vector eye logo. Clicking it opens a brief localized introduction. Any mouse button inside dismisses and consumes the click/release; Escape or clicking another application also closes it.

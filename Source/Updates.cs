@@ -1,46 +1,50 @@
-using System.IO;
 using System.Windows;
 using System.Windows.Threading;
 namespace MooView;
 
 public partial class MainWindow
 {
-    readonly UpdateClient updateClient=new();readonly CancellationTokenSource updateLifetime=new();readonly DispatcherTimer updateNoticeTimer=new(){Interval=TimeSpan.FromSeconds(10)};
-    readonly string updateSettingsPath=Path.Combine(UpdateClient.DataRoot,"updates.json");UpdatePreferences updatePreferences=new();UpdateRelease? availableUpdate;bool updateWindowOpen,notifiedUpdate,updateStopped;
+    UpdateManager? updates;readonly DispatcherTimer updateNoticeTimer=new(){Interval=TimeSpan.FromSeconds(10)};readonly DispatcherTimer updateCheckTimer=new(){Interval=TimeSpan.FromMinutes(30)};
+    bool updateWindowOpen,notifiedUpdate,updateStopped,updateRestarting,updateSessionEnding;string? notifiedVersion;
     void InitializeUpdates(bool testMode)
     {
-        if(!testMode)
+        if(testMode)return;updates=new UpdateManager();updates.Changed+=UpdateStateChanged;
+        Loaded+=async(_,_)=>{try{await Task.Delay(2500);if(!updateStopped)await updates.CheckAsync();}catch{/* Offline startup never interrupts image viewing. */}};
+        updateCheckTimer.Tick+=async(_,_)=>{if(!updateStopped)await updates.CheckAsync();};updateCheckTimer.Start();
+        updateNoticeTimer.Tick+=(_,_)=>TryUpdateNotice();Activated+=(_,_)=>Dispatcher.BeginInvoke(TryUpdateNotice);
+        Application.Current.SessionEnding+=UpdateSessionEnding;
+        Closed+=(_,_)=>
         {
-            updatePreferences=UpdatePreferences.Load(updateSettingsPath);Loaded+=async(_,_)=>
-            {
-                try{await Task.Delay(2500,updateLifetime.Token);if(!updatePreferences.ShouldCheck(DateTimeOffset.UtcNow))return;
-                    updatePreferences=updatePreferences with{LastCheckUtc=DateTimeOffset.UtcNow};SaveUpdatePreferences();availableUpdate=await updateClient.CheckAsync(UpdateClient.CurrentVersion,updateLifetime.Token);
-                    if(availableUpdate!=null){UpdateButton.SetResourceReference(System.Windows.Controls.Control.BackgroundProperty,"Accent");updateNoticeTimer.Start();TryUpdateNotice();}}
-                catch(OperationCanceledException){}catch{/* Offline startup must not interrupt image viewing. */}
-            };
-            updateNoticeTimer.Tick+=(_,_)=>TryUpdateNotice();Activated+=(_,_)=>Dispatcher.BeginInvoke(TryUpdateNotice);
-        }
-        Closed+=(_,_)=>{updateStopped=true;updateNoticeTimer.Stop();updateLifetime.Cancel();updateClient.Dispose();updateLifetime.Dispose();};
+            updateStopped=true;updateNoticeTimer.Stop();updateCheckTimer.Stop();Application.Current.SessionEnding-=UpdateSessionEnding;
+            updates.Changed-=UpdateStateChanged;if(!updateRestarting)updates.ApplyOnExit(updateSessionEnding);updates.Dispose();
+        };
+        UpdateStateChanged();
     }
+    void UpdateSessionEnding(object sender,SessionEndingCancelEventArgs e)=>updateSessionEnding=true;
     internal static bool CanNotifyUpdate(bool fullscreen,bool active,int ownedWindows,bool dialogOpen)=>!fullscreen&&active&&ownedWindows==0&&!dialogOpen;
+    void UpdateStateChanged()
+    {
+        if(updateStopped||updates==null)return;
+        if(updates.Available!=null||updates.Ready)UpdateButton.SetResourceReference(System.Windows.Controls.Control.BackgroundProperty,"Accent");
+        if(updates.Ready)Status(L10n.T(updates.State)+" · "+updates.ReadyVersion);
+        if(updates.Available!=null&&!updates.Preferences.DownloadOnExit&&!updates.Ready){updateNoticeTimer.Start();TryUpdateNotice();}
+    }
     void TryUpdateNotice()
     {
-        if(updateStopped||notifiedUpdate||availableUpdate==null||AboutOverlay.Visibility==Visibility.Visible||!CanNotifyUpdate(full,IsActive,OwnedWindows.Count,updateWindowOpen))return;
-        notifiedUpdate=true;updateNoticeTimer.Stop();ShowUpdates(this,new RoutedEventArgs());
+        if(updateStopped||updates==null||updates.Preferences.DownloadOnExit||updates.Available==null||updates.Ready||AboutOverlay.Visibility==Visibility.Visible||!CanNotifyUpdate(full,IsActive,OwnedWindows.Count,updateWindowOpen))return;
+        string version=updates.Available.Version.ToString(3);if(notifiedUpdate&&version==notifiedVersion)return;
+        notifiedUpdate=true;notifiedVersion=version;updateNoticeTimer.Stop();ShowUpdates(this,new RoutedEventArgs());
     }
-    void SaveUpdatePreferences(){try{updatePreferences.Save(updateSettingsPath);}catch(Exception ex){Status(L10n.T("UpdateSettingsFailed")+" "+ex.Message);}}
-    async void ShowUpdates(object sender,RoutedEventArgs e)
+    void ShowUpdates(object sender,RoutedEventArgs e)
     {
-        if(updateStopped||updateWindowOpen)return;Stop();updateWindowOpen=true;notifiedUpdate=true;updateNoticeTimer.Stop();
+        if(updateStopped||updateWindowOpen||updates==null)return;Stop();updateWindowOpen=true;notifiedUpdate=true;notifiedVersion=updates.Available?.Version.ToString(3);updateNoticeTimer.Stop();
         try
         {
-            var dialog=new UpdateWindow(updateClient,availableUpdate,updatePreferences.AutomaticChecks,value=>{updatePreferences=updatePreferences with{AutomaticChecks=value};SaveUpdatePreferences();}){Owner=this};
-            if(dialog.ShowDialog()!=true||dialog.Download is not{} download)return;
-            if(OwnedWindows.Cast<Window>().Any(w=>w.IsVisible)||UpdateInstaller.OtherInstances(AppContext.BaseDirectory.TrimEnd(Path.DirectorySeparatorChar),Environment.ProcessId)){Dialogs.Info(this,L10n.T("Updates"),L10n.T("UpdateOtherInstances"));return;}
-            IsEnabled=false;Status(L10n.T("UpdatePreparing"));
-            string plan=await UpdateInstaller.PrepareAsync(download,files.Count>0?files[index]:null,updateLifetime.Token);UpdateInstaller.Launch(plan);Close();
+            var dialog=new UpdateWindow(updates){Owner=this};if(dialog.ShowDialog()!=true||!updates.Ready)return;
+            if(OwnedWindows.Cast<Window>().Any(w=>w.IsVisible)||UpdateInstaller.OtherInstances(AppContext.BaseDirectory.TrimEnd(System.IO.Path.DirectorySeparatorChar),Environment.ProcessId)){Dialogs.Info(this,L10n.T("Updates"),L10n.T("UpdateOtherInstances"));return;}
+            updateRestarting=updates.LaunchPending(true,files.Count>0?files[index]:null);if(updateRestarting)Close();
         }
-        catch(OperationCanceledException){}catch(Exception ex){if(!updateStopped)Error(ex);}
-        finally{if(!updateStopped){IsEnabled=true;updateWindowOpen=false;}}
+        catch(Exception ex){if(!updateStopped)Error(ex);}
+        finally{if(!updateStopped){updateWindowOpen=false;notifiedVersion=updates.Available?.Version.ToString(3);}}
     }
 }

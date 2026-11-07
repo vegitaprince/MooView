@@ -4,7 +4,9 @@
 #ifndef ReleaseDir
   #define ReleaseDir "..\artifacts\release"
 #endif
-#define AppVersion "1.8.0"
+#ifndef AppVersion
+#define AppVersion "1.9.0"
+#endif
 [Setup]
 AppId={{D97071AE-3FF5-48D8-93CE-41BC4B769352}
 AppName=MooView
@@ -41,7 +43,9 @@ korean.DefaultApp=MooView를 기본 이미지 앱으로 선택
 [Tasks]
 Name: "desktopicon"; Description: "{cm:DesktopShortcut}"; Flags: unchecked
 [Files]
-Source: "{#PublishDir}\*"; DestDir: "{app}"; Excludes: "test-data\*,self-test.txt,ui-test.txt,preview-*.png,*.pdb"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#PublishDir}\*"; DestDir: "{app}"; Excludes: "MooView.portable,test-data\*,self-test.txt,ui-test.txt,preview-*.png,*.pdb"; Flags: ignoreversion recursesubdirs createallsubdirs
+[InstallDelete]
+Type: files; Name: "{app}\MooView.portable"
 [Icons]
 Name: "{group}\MooView"; Filename: "{app}\MooView.exe"
 Name: "{userdesktop}\MooView"; Filename: "{app}\MooView.exe"; Tasks: desktopicon

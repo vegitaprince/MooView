@@ -7,13 +7,13 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 namespace MooView;
 
-internal sealed record UpdateRelease(Version Version,string Tag,string Notes,Uri Page,Uri Installer,string Name,long Size,string Sha256);
+internal sealed record UpdateRelease(Version Version,string Tag,string Notes,Uri Page,Uri Installer,string Name,long Size,string Sha256){internal bool Portable=>Name.EndsWith(".zip",StringComparison.OrdinalIgnoreCase);}
 internal sealed record DownloadedUpdate(UpdateRelease Release,string FilePath);
-internal sealed record UpdatePreferences(bool AutomaticChecks=true,DateTimeOffset? LastCheckUtc=null)
+internal sealed record UpdatePreferences(bool AutomaticChecks=true,DateTimeOffset? LastCheckUtc=null,bool DownloadOnExit=false)
 {
     internal bool ShouldCheck(DateTimeOffset now)=>AutomaticChecks&&(LastCheckUtc==null||now-LastCheckUtc>=TimeSpan.FromHours(12)||LastCheckUtc>now);
     internal static UpdatePreferences Load(string path){try{return JsonSerializer.Deserialize<UpdatePreferences>(File.ReadAllText(path))??new();}catch{return new();}}
-    internal void Save(string path){Directory.CreateDirectory(Path.GetDirectoryName(path)!);string temp=path+".tmp";File.WriteAllText(temp,JsonSerializer.Serialize(this));File.Move(temp,path,true);}
+    internal void Save(string path){Directory.CreateDirectory(Path.GetDirectoryName(path)!);string temp=path+"."+Guid.NewGuid().ToString("N")+".tmp";File.WriteAllText(temp,JsonSerializer.Serialize(this));File.Move(temp,path,true);}
 }
 internal sealed class UpdateClient:IDisposable
 {
@@ -34,13 +34,14 @@ internal sealed class UpdateClient:IDisposable
         version=new(0,0,0);if(!Regex.IsMatch(text,@"^v?(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$"))return false;
         return Version.TryParse(text.TrimStart('v'),out version!);
     }
-    internal static UpdateRelease? Parse(string json,Version current)
+    internal static string PackageName(Version version,bool portable)=>portable?$"MooView-Portable-{version.ToString(3)}-x64.zip":$"MooView-Setup-{version.ToString(3)}-x64.exe";
+    internal static UpdateRelease? Parse(string json,Version current,bool portable=false)
     {
         using var document=JsonDocument.Parse(json);var root=document.RootElement;
         if(root.GetProperty("draft").GetBoolean()||root.GetProperty("prerelease").GetBoolean())return null;
         string tag=root.GetProperty("tag_name").GetString()??"";if(!TryVersion(tag,out var version))return null;
         if(version<=new Version(current.Major,current.Minor,Math.Max(0,current.Build)))return null;
-        string name=$"MooView-Setup-{version.ToString(3)}-x64.exe";
+        string name=PackageName(version,portable);
         string expected=Repository+"/releases/download/"+tag+"/"+name;
         foreach(var asset in root.GetProperty("assets").EnumerateArray())
         {
@@ -55,7 +56,8 @@ internal sealed class UpdateClient:IDisposable
         }
         throw new InvalidDataException(L10n.T("UpdateNotReady"));
     }
-    internal async Task<UpdateRelease?> CheckAsync(Version current,CancellationToken token)
+    internal Task<UpdateRelease?> CheckAsync(Version current,CancellationToken token)=>CheckPackageAsync(current,token,false);
+    internal async Task<UpdateRelease?> CheckPackageAsync(Version current,CancellationToken token,bool portable)
     {
         using var timeout=CancellationTokenSource.CreateLinkedTokenSource(token);timeout.CancelAfter(TimeSpan.FromSeconds(15));
         using var response=await http.GetAsync(LatestApi,HttpCompletionOption.ResponseHeadersRead,timeout.Token);
@@ -64,7 +66,7 @@ internal sealed class UpdateClient:IDisposable
         if(response.Content.Headers.ContentLength>1024*1024)throw new InvalidDataException(L10n.T("UpdateInvalid"));
         using var stream=await response.Content.ReadAsStreamAsync(timeout.Token);using var buffer=new MemoryStream();
         byte[] bytes=new byte[16384];int read;while((read=await stream.ReadAsync(bytes,timeout.Token))>0){if(buffer.Length+read>1024*1024)throw new InvalidDataException(L10n.T("UpdateInvalid"));await buffer.WriteAsync(bytes.AsMemory(0,read),timeout.Token);}
-        return Parse(System.Text.Encoding.UTF8.GetString(buffer.ToArray()),current);
+        return Parse(System.Text.Encoding.UTF8.GetString(buffer.ToArray()),current,portable);
     }
     internal static bool TrustedDownloadUri(Uri uri)=>uri.Scheme=="https"&&uri.IsDefaultPort&&uri.UserInfo.Length==0&&new[]{"github.com","release-assets.githubusercontent.com","objects.githubusercontent.com","github-releases.githubusercontent.com"}.Contains(uri.Host,StringComparer.OrdinalIgnoreCase);
     async Task<HttpResponseMessage> GetInstallerAsync(Uri uri,CancellationToken token)
@@ -84,7 +86,7 @@ internal sealed class UpdateClient:IDisposable
     internal async Task<DownloadedUpdate> DownloadAsync(UpdateRelease release,string root,IProgress<double>? progress,CancellationToken token)
     {
         string expected=Repository+"/releases/download/"+release.Tag+"/"+release.Name;
-        if(!TryVersion(release.Tag,out var parsed)||parsed!=release.Version||release.Name!=$"MooView-Setup-{parsed.ToString(3)}-x64.exe"||release.Installer.AbsoluteUri!=expected||!Regex.IsMatch(release.Sha256,@"^[a-fA-F0-9]{64}$")||release.Size<1||release.Size>MaximumInstallerSize)throw new InvalidDataException(L10n.T("UpdateInvalid"));
+        if(!TryVersion(release.Tag,out var parsed)||parsed!=release.Version||release.Name!=PackageName(parsed,release.Portable)||release.Installer.AbsoluteUri!=expected||!Regex.IsMatch(release.Sha256,@"^[a-fA-F0-9]{64}$")||release.Size<1||release.Size>MaximumInstallerSize)throw new InvalidDataException(L10n.T("UpdateInvalid"));
         string folder=Path.Combine(root,Guid.NewGuid().ToString("N"));Directory.CreateDirectory(folder);string partial=Path.Combine(folder,"download.partial"),final=Path.Combine(folder,release.Name);
         using var timeout=CancellationTokenSource.CreateLinkedTokenSource(token);timeout.CancelAfter(TimeSpan.FromMinutes(10));
         try

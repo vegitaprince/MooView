@@ -2,15 +2,23 @@
 
 A compact Windows image viewer with an icon-only interface, Korean/English UI, animated GIF playback, multi-image layouts, and a small layered editor.
 
-Windows 10/11 x64. Download **MooView-Setup-1.8.0-x64.exe** from [Releases](https://github.com/vegitaprince/MooView/releases/latest). The installer includes .NET; no separate runtime installation is required. A portable ZIP is also available.
+Windows 10/11 x64. Download **MooView-Setup-1.9.0-x64.exe** from [Releases](https://github.com/vegitaprince/MooView/releases/latest). The installer includes .NET; no separate runtime installation is required. A portable ZIP is also available.
 
 ## Updates
 
-Use the circular download-arrow icon near the bottom of the left rail. Startup checks are enabled by default and run at most once every 12 hours against this repository's latest stable GitHub release. Turn them off or use **Check now** in the update window. Automatic notices wait until the app is active, outside fullscreen, with no editor or dialog open.
+Use the update icon near the bottom of the left rail. The update window identifies the current copy as **Installed** or **Portable** and selects the matching stable release asset. **Check now** is always available. Automatic checks are enabled by default, run on startup when due, and are revisited while the app remains open (at most one network check per 12 hours).
 
-Choose **Update and restart** to download, verify the release asset's SHA-256, close MooView, run the per-user installer in the same folder, and reopen the current image. Save edits and close other MooView windows first. Cancellation, offline checks, incomplete releases, and verification failures leave the current installation intact. Installation never forcibly closes other processes. The first upgrade from 1.5.0 or earlier requires the installer; subsequent releases can use this updater. Portable users who choose Update install in their current folder; use a new portable ZIP if they prefer to remain portable.
+**Automatically download updates and apply on app exit** is off by default. When enabled, MooView downloads the matching installer or portable ZIP, verifies its GitHub SHA-256 digest, and prepares an independent update helper while you keep using the app. It applies only after a normal app exit and after all other MooView processes in the same folder have exited. It does not force-close windows or restart the app. Windows shutdown/restart defers application to a later normal exit. Turning the option off also prevents an already staged update from applying automatically, including when a helper is waiting for another window. Failed/cancelled/incomplete downloads never become pending updates.
 
-Update preferences and the last check time are stored separately in `%LOCALAPPDATA%\MooView\updates.json`. Temporary verified installers, helper runtime files, and install logs remain under `%LOCALAPPDATA%\MooView\Updates` for troubleshooting. No login or GitHub token is required. Distribution builds must attach the exact `MooView-Setup-X.Y.Z-x64.exe` installer to a stable `vX.Y.Z` release with GitHub's SHA-256 asset digest. A checksum detects damaged downloads; it does not replace publisher code signing.
+Manual **Update and restart** remains available. Save edits and close other MooView windows first. A verified staged update is reused and the current image is reopened after a manual update. Automatic download progress does not interrupt fullscreen or editing with a dialog.
+
+Portable updates stay portable: they use a manifest-bearing ZIP, replace only known program/runtime files, preserve images/settings/unrelated files in the same folder, and create no installer/uninstaller or file associations. Manifest paths, ZIP links/duplicates/expanded size, file lengths and individual SHA-256 digests are checked. Replacements use a backup transaction; ordinary file replacement errors restore the prior program files. Unchanged obsolete files tracked by the prior manifest can be removed; unrelated files are retained. The target folder must remain present and writable.
+
+**Migration:** portable versions 1.8.0 and earlier need the 1.9.0 portable ZIP once; their old updater only understands installers. Installed copies can use the normal installer update. The installer excludes/removes the portable marker so it remains an installed copy.
+
+Preferences, available-release metadata and verified pending handoffs are scoped to the application folder under `%LOCALAPPDATA%\MooView`. This keeps copies in separate folders from inheriting each other's consent or packages. Existing viewer settings keep their existing location. Packages/helpers/logs are cached under `Updates` for retries and troubleshooting; interrupted Windows shutdown leaves the update pending. No GitHub login or token is required.
+
+Distribution builds use `--package-portable` to create `MooView.files.json` plus a portable marker and an archive containing exactly the declared payload. Both `MooView-Setup-X.Y.Z-x64.exe` and `MooView-Portable-X.Y.Z-x64.zip` must be attached to a stable `vX.Y.Z` release with GitHub asset digests. The build checks tag/project-version consistency. SHA-256 detects damaged downloads; it does not replace publisher code signing.
 
 ## Appearance
 
