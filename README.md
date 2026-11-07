@@ -2,7 +2,15 @@
 
 A compact Windows image viewer with an icon-only interface, Korean/English UI, animated GIF playback, multi-image layouts, and a small layered editor.
 
-Windows 10/11 x64. Download **MooView-Setup-1.5.0-x64.exe** from [Releases](https://github.com/vegitaprince/MooView/releases/latest). The installer includes .NET; no separate runtime installation is required. A portable ZIP is also available.
+Windows 10/11 x64. Download **MooView-Setup-1.6.0-x64.exe** from [Releases](https://github.com/vegitaprince/MooView/releases/latest). The installer includes .NET; no separate runtime installation is required. A portable ZIP is also available.
+
+## Updates
+
+Use the circular download-arrow icon near the bottom of the left rail. Startup checks are enabled by default and run at most once every 12 hours against this repository's latest stable GitHub release. Turn them off or use **Check now** in the update window. Automatic notices wait until the app is active, outside fullscreen, with no editor or dialog open.
+
+Choose **Update and restart** to download, verify the release asset's SHA-256, close MooView, run the per-user installer in the same folder, and reopen the current image. Save edits and close other MooView windows first. Cancellation, offline checks, incomplete releases, and verification failures leave the current installation intact. Installation never forcibly closes other processes. The first upgrade from 1.5.0 or earlier requires the installer; subsequent releases can use this updater. Portable users who choose Update install in their current folder; use a new portable ZIP if they prefer to remain portable.
+
+Update preferences and the last check time are stored separately in `%LOCALAPPDATA%\MooView\updates.json`. Temporary verified installers, helper runtime files, and install logs remain under `%LOCALAPPDATA%\MooView\Updates` for troubleshooting. No login or GitHub token is required. Distribution builds must attach the exact `MooView-Setup-X.Y.Z-x64.exe` installer to a stable `vX.Y.Z` release with GitHub's SHA-256 asset digest. A checksum detects damaged downloads; it does not replace publisher code signing.
 
 ## Features
 

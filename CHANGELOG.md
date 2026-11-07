@@ -1,3 +1,14 @@
+# MooView 1.6.0
+
+- Added an icon-only update entry, startup update checks with a 12-hour interval, an opt-out preference, and manual checks. Fullscreen, inactive windows, and modal editing defer automatic notices.
+- Added Korean/English release notes, download progress and cancellation. Only newer stable MooView GitHub installers with valid SHA-256 asset digests are accepted; failed or cancelled downloads cannot install.
+- Update and restart uses a separate bundled helper, waits for the viewer to exit, installs into the existing folder without force-closing applications, and reopens the current image. Other MooView windows must be closed first.
+
+## 한국어
+
+- 왼쪽 하단 다운로드 화살표 아이콘에서 업데이트를 수동 확인하거나 시작 시 자동 확인을 켜고 끌 수 있습니다.
+- 자동 확인은 12시간 간격이며 전체화면·편집 중에는 알림을 미룹니다. 업데이트를 누르면 다운로드와 SHA-256 검증 후 설치하고 현재 이미지로 다시 시작합니다.
+- 1.5.0 이하 버전은 이번 설치 파일로 한 번 업데이트해야 합니다. 이후 버전부터 앱 안에서 업데이트할 수 있습니다.
 # MooView 1.5.0
 
 - Moved minimize/maximize/close onto the image toolbar row and removed the separate empty caption row. Blank toolbar space still drags the window.
