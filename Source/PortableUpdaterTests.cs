@@ -71,6 +71,7 @@ internal static class PortableUpdaterTests
             using(var other=new UpdateManager(Fixture("other-target"),Client(Json()),storage,true,prior,launcher:Launch))Check(!other.Ready&&!other.Preferences.DownloadOnExit,"a different portable folder cannot inherit another copy's pending update or consent");
             using(var second=new UpdateManager(target,Client(Json()),storage,true,prior,launcher:Launch))second.SetPreferences(true,false);
             manager.ApplyOnExit(false);Check(launched.Count==2,"exit reloads the latest consent changed by another window");
+            var manualWindow=new UpdateWindow(manager);var timeout=new System.Windows.Threading.DispatcherTimer{Interval=TimeSpan.FromSeconds(3)};timeout.Tick+=(_,_)=>{timeout.Stop();manualWindow.Close();};manualWindow.Loaded+=(_,_)=>manualWindow.Dispatcher.BeginInvoke(()=>{var button=(System.Windows.Controls.Button)typeof(UpdateWindow).GetField("install",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic)!.GetValue(manualWindow)!;button.RaiseEvent(new RoutedEventArgs(System.Windows.Controls.Button.ClickEvent));});timeout.Start();bool? accepted=manualWindow.ShowDialog();timeout.Stop();Check(accepted==true,"manual apply closes the ready update dialog and returns to restart flow");
             bool english=L10n.Instance.English;
             foreach(bool en in new[]{false,true})
             {

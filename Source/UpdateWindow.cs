@@ -19,9 +19,9 @@ internal sealed class UpdateWindow:Window
         var track=new FrameworkElementFactory(typeof(Grid));track.Name="PART_Track";track.SetResourceReference(Panel.BackgroundProperty,"Field");var indicator=new FrameworkElementFactory(typeof(Border));indicator.Name="PART_Indicator";indicator.SetValue(HorizontalAlignmentProperty,HorizontalAlignment.Left);indicator.SetResourceReference(Border.BackgroundProperty,"Muted");track.AppendChild(indicator);progress.Template=new ControlTemplate(typeof(ProgressBar)){VisualTree=track};
         var row=new WrapPanel{HorizontalAlignment=HorizontalAlignment.Right};panel.Children.Add(row);check.Content=L10n.T("UpdateCheck");install.Content=L10n.T("UpdateInstall");cancel.Content=L10n.T("Close");row.Children.Add(check);row.Children.Add(install);row.Children.Add(cancel);
         check.Click+=async(_,_)=>{manualBusy=true;try{await manager.CheckAsync(true);}finally{manualBusy=false;}};
-        install.Click+=async(_,_)=>{manualBusy=true;try{await manager.StageAsync();if(manager.Ready)DialogResult=true;}finally{manualBusy=false;}};
+        install.Click+=async(_,_)=>{manualBusy=true;try{await manager.StageAsync();manualBusy=false;if(manager.Ready)DialogResult=true;}finally{manualBusy=false;}};
         cancel.Click+=(_,_)=>{if(manager.Busy)manager.Cancel();else Close();};
-        Closing+=(_,e)=>{if(manualBusy){e.Cancel=true;manager.Cancel();}};Closed+=(_,_)=>manager.Changed-=Refresh;
+        Closing+=(_,e)=>{if(manualBusy&&manager.Busy){e.Cancel=true;manager.Cancel();}};Closed+=(_,_)=>manager.Changed-=Refresh;
         manager.Changed+=Refresh;Refresh();Loaded+=async(_,_)=>{if(!manager.Ready&&manager.Available==null&&!manager.Busy)await manager.CheckAsync(true);};
     }
     void PreferencesChanged(object sender,RoutedEventArgs e)
