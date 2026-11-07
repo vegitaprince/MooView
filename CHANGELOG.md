@@ -1,3 +1,17 @@
+# MooView 1.5.0
+
+- Moved minimize/maximize/close onto the image toolbar row and removed the separate empty caption row. Blank toolbar space still drags the window.
+- Added filenames to the bottom bar, including all visible filenames in multi-image views and a full-name tooltip.
+- Added a draggable image timeline. Click or drag anywhere on its track to browse folder images. Seeking pauses slideshow playback, coalesces rapid requests, and keeps names/counters synchronized. Normal next/previous navigation still advances full image groups.
+- Reworked icons as cached vector geometries with DPI-aware strokes and axis guidelines. Button borders, dropdown chevrons, checkboxes and slider thumbs use a consistent vector style. Grayscale text avoids RGB color fringing.
+
+## 한국어
+
+- 창 버튼을 메뉴와 같은 줄 우측으로 이동하고 별도의 빈 상단 줄을 제거했습니다.
+- 하단 바에 파일명을 표시하며 여러 장 보기에서는 표시 중인 파일 이름을 함께 보여줍니다.
+- 하단 탐색 슬라이더를 클릭하거나 드래그하면 폴더의 이미지를 바로 탐색합니다. 수동 탐색을 시작하면 자동 재생은 정지합니다.
+- 아이콘의 벡터 도형, 선 굵기와 픽셀 정렬을 다듬고 버튼·체크박스·슬라이더 스타일을 통일했습니다.
+
 # MooView 1.4.0
 
 - Sharper UI: Per-Monitor V2 DPI awareness, layout pixel rounding, display text formatting, and removal of whole-container shadow effects.

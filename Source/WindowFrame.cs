@@ -17,7 +17,7 @@ public partial class MainWindow
     }
     void UpdateWindowButtons()
     {
-        MaximizeButton.Content = new Glyph { Kind = WindowState == WindowState.Maximized ? "restore" : "maximize", Width = 17, Height = 17 };
+        MaximizeButton.Content = new Glyph { Kind = WindowState == WindowState.Maximized ? "restore" : "maximize", Width = 20, Height = 20 };
         System.Windows.Automation.AutomationProperties.SetName(MaximizeButton, L10n.T(WindowState == WindowState.Maximized ? "Restore" : "Maximize"));
         System.Windows.Automation.AutomationProperties.SetName(MinimizeButton, L10n.T("Minimize"));
         System.Windows.Automation.AutomationProperties.SetName(CloseWindowButton, L10n.T("Close"));
@@ -27,7 +27,7 @@ public partial class MainWindow
     void CloseWindow(object sender, RoutedEventArgs e) => Close();
     void TitleDrag(object sender, MouseButtonEventArgs e)
     {
-        if (full || ParentOf<ButtonBase>(e.OriginalSource as DependencyObject) != null) return;
+        if (full || ParentOf<ButtonBase>(e.OriginalSource as DependencyObject) != null || ParentOf<System.Windows.Controls.ComboBox>(e.OriginalSource as DependencyObject) != null || ParentOf<System.Windows.Controls.TextBox>(e.OriginalSource as DependencyObject) != null) return;
         if (e.ClickCount == 2) MaximizeWindow(this, e);
         else if (e.LeftButton == MouseButtonState.Pressed) { try { DragMove(); } catch (InvalidOperationException) { } }
         e.Handled = true;

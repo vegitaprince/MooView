@@ -2,9 +2,14 @@
 
 A compact Windows image viewer with an icon-only interface, Korean/English UI, animated GIF playback, multi-image layouts, and a small layered editor.
 
-Windows 10/11 x64. Download **MooView-Setup-1.4.0-x64.exe** from [Releases](https://github.com/vegitaprince/MooView/releases/latest). The installer includes .NET; no separate runtime installation is required. A portable ZIP is also available.
+Windows 10/11 x64. Download **MooView-Setup-1.5.0-x64.exe** from [Releases](https://github.com/vegitaprince/MooView/releases/latest). The installer includes .NET; no separate runtime installation is required. A portable ZIP is also available.
 
 ## Features
+
+- Window controls share the image toolbar row; no separate caption row.
+- Bottom-bar filenames and a draggable image timeline. Click/drag the track to browse directly; manual seeking pauses slideshow playback.
+- Cached vector icons, DPI-aware strokes, grayscale text, and consistent vector buttons/checkboxes/sliders.
+
 
 - Crisp UI: Per-Monitor V2 DPI awareness, pixel-aligned layout and display text formatting; no shadow effects rasterizing whole controls.
 - Drag the divider beside the file sidebar to resize it. Its width is saved between sessions.
