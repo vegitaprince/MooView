@@ -1,3 +1,15 @@
+# MooView 1.7.0
+
+- Fixed clipped rail, toolbar and window-control icons by giving glyphs enough content space and including stroke widths inside their viewport.
+- Separated dropdown labels/icons and arrows into dedicated columns, including the editable FPS field. Korean and English labels have room at narrow window widths.
+- Replaced the green tint with neutral grayscale light/dark palettes across controls, checkerboards, minimaps, crop/selection overlays and the tone graph. Drawing colors remain available.
+- Default to Windows app appearance and respond to system theme changes. Click the theme icon or press D for a remembered manual override; right-click the icon to follow Windows again. Legacy settings start in system mode.
+
+## 한국어
+
+- 왼쪽 메뉴·툴바·창 버튼의 아이콘 잘림을 수정하고 드롭다운 글자와 화살표 영역을 분리했습니다.
+- UI의 녹색 기운을 제거하고 무채색 라이트·다크 테마로 바꿨습니다.
+- 기본값은 Windows 앱 모드를 따릅니다. 테마 아이콘 클릭/D로 수동 전환하고, 우클릭으로 Windows 연동을 복원합니다. 직접 선택한 테마는 저장됩니다.
 # MooView 1.6.0
 
 - Added an icon-only update entry, startup update checks with a 12-hour interval, an opt-out preference, and manual checks. Fullscreen, inactive windows, and modal editing defer automatic notices.

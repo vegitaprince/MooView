@@ -7,7 +7,7 @@ public sealed class Glyph:Control
     static readonly Dictionary<string,(Geometry shape,double[] x,double[] y)> vectors=new();
     public static readonly DependencyProperty KindProperty=DependencyProperty.Register(nameof(Kind),typeof(string),typeof(Glyph),new FrameworkPropertyMetadata("image",FrameworkPropertyMetadataOptions.AffectsRender));
     public string Kind{get=>(string)GetValue(KindProperty);set=>SetValue(KindProperty,value);}
-    static Glyph(){ForegroundProperty.OverrideMetadata(typeof(Glyph),new FrameworkPropertyMetadata(Brushes.Black,FrameworkPropertyMetadataOptions.Inherits|FrameworkPropertyMetadataOptions.AffectsRender));} public Glyph(){UseLayoutRounding=true;SnapsToDevicePixels=true;Width=22;Height=22;IsHitTestVisible=false;SetResourceReference(ForegroundProperty,"Text");}
+    static Glyph(){WidthProperty.OverrideMetadata(typeof(Glyph),new FrameworkPropertyMetadata(22.0));HeightProperty.OverrideMetadata(typeof(Glyph),new FrameworkPropertyMetadata(22.0));ForegroundProperty.OverrideMetadata(typeof(Glyph),new FrameworkPropertyMetadata(Brushes.Black,FrameworkPropertyMetadataOptions.Inherits|FrameworkPropertyMetadataOptions.AffectsRender));} public Glyph(){UseLayoutRounding=true;SnapsToDevicePixels=true;IsHitTestVisible=false;SetResourceReference(ForegroundProperty,"Text");}
     internal static readonly Dictionary<string,string> Paths=new(){
         ["update"]="M4,8 A9,9 0 1 1 3,16 M4,2 L4,8 10,8 M12,7 L12,17 M8,13 L12,17 16,13", ["chevrondown"]="M5,9 L12,16 19,9", ["maximize"]="M3,3 L21,3 21,21 3,21 Z", ["restore"]="M3,8 L16,8 16,21 3,21 Z M8,8 L8,3 21,3 21,16 16,16",
         ["list"]="M2,5 L4,5 M8,5 L22,5 M2,12 L4,12 M8,12 L22,12 M2,19 L4,19 M8,19 L22,19",
@@ -16,7 +16,7 @@ public sealed class Glyph:Control
         ["sidebar"]="M4,3 L20,3 Q22,3 22,5 L22,19 Q22,21 20,21 L4,21 Q2,21 2,19 L2,5 Q2,3 4,3 M9,3 L9,21 M4.5,7 L6.5,7 M4.5,11 L6.5,11 M4.5,15 L6.5,15",
         ["edit"]="M14,5 L18,1 23,6 8,21 2,22 3,16 Z M12,7 L17,12 M3,16 L8,21",
         ["info"]="M22,12 A10,10 0 1 1 2,12 A10,10 0 1 1 22,12 M12,10 L12,17 M12,6 L12,7",
-        ["theme"]="M22,12 A10,10 0 1 1 2,12 A10,10 0 1 1 22,12 M12,2 L12,22 M15,5 L15,19 M18,7 L18,17",
+        ["theme"]="M21,13 A9,9 0 1 1 11,3 A7,7 0 0 0 21,13 Z",
         ["help"]="M22,12 A10,10 0 1 1 2,12 A10,10 0 1 1 22,12 M8.5,8 Q9,4 13,5 Q18,6 14,10 Q12,11 12,14 M12,17 L12,18",
         ["fullscreen"]="M2,9 L2,2 9,2 M15,2 L22,2 22,9 M22,15 L22,22 15,22 M9,22 L2,22 2,15",
         ["previous"]="M15,4 L7,12 15,20",["next"]="M9,4 L17,12 9,20",
@@ -41,9 +41,10 @@ public sealed class Glyph:Control
     protected override void OnRender(DrawingContext dc)
     {
         base.OnRender(dc);if(ActualWidth<1||ActualHeight<1)return;
-        var dpi=VisualTreeHelper.GetDpi(this);double size=Math.Min(ActualWidth,ActualHeight),scale=size/24;
+        var dpi=VisualTreeHelper.GetDpi(this);double size=Math.Min(ActualWidth,ActualHeight);
         double stroke=Math.Max(1,Math.Round(1.6*dpi.DpiScaleX,MidpointRounding.AwayFromZero))/dpi.DpiScaleX;
-        double x=Math.Round((ActualWidth-size)/2*dpi.DpiScaleX)/dpi.DpiScaleX,y=Math.Round((ActualHeight-size)/2*dpi.DpiScaleY)/dpi.DpiScaleY;
+        double extent=Math.Max(0,size-stroke),scale=extent/24;
+        double x=Math.Round((ActualWidth-extent)/2*dpi.DpiScaleX)/dpi.DpiScaleX,y=Math.Round((ActualHeight-extent)/2*dpi.DpiScaleY)/dpi.DpiScaleY;
         var vector=Vector(Kind);var guides=new GuidelineSet();
         foreach(double axis in vector.x){guides.GuidelinesX.Add(x+axis*scale-stroke/2);guides.GuidelinesX.Add(x+axis*scale+stroke/2);}
         foreach(double axis in vector.y){guides.GuidelinesY.Add(y+axis*scale-stroke/2);guides.GuidelinesY.Add(y+axis*scale+stroke/2);}
