@@ -25,7 +25,7 @@ public partial class MainWindow
     internal static bool CanNotifyUpdate(bool fullscreen,bool active,int ownedWindows,bool dialogOpen)=>!fullscreen&&active&&ownedWindows==0&&!dialogOpen;
     void TryUpdateNotice()
     {
-        if(updateStopped||notifiedUpdate||availableUpdate==null||!CanNotifyUpdate(full,IsActive,OwnedWindows.Count,updateWindowOpen))return;
+        if(updateStopped||notifiedUpdate||availableUpdate==null||AboutOverlay.Visibility==Visibility.Visible||!CanNotifyUpdate(full,IsActive,OwnedWindows.Count,updateWindowOpen))return;
         notifiedUpdate=true;updateNoticeTimer.Stop();ShowUpdates(this,new RoutedEventArgs());
     }
     void SaveUpdatePreferences(){try{updatePreferences.Save(updateSettingsPath);}catch(Exception ex){Status(L10n.T("UpdateSettingsFailed")+" "+ex.Message);}}

@@ -1,3 +1,16 @@
+# MooView 1.8.0
+
+- Replaced the top-left image/import lookalike with a vector eye logo. Clicking it opens a brief localized introduction. Any mouse button inside dismisses and consumes the click/release; Escape or clicking another application also closes it.
+- Replaced drifting slideshow intervals with absolute deadlines and paint-driven image presentation, with a wake-up pulse for an idle visual tree. One group is committed per distinct render; stalls do not burst through or skip groups.
+- Added immediate live FPS changes and measured/requested playback FPS in the status bar. File-list and metadata work is decoupled from per-frame image updates.
+- Added shared in-flight bitmap/GIF decodes, lookahead across looping folders, and a bounded decoded-image cache. Repeated GIF navigation reuses decoded data.
+- Small-image benchmark: 30-fps observed presentation improved from about 21.4 to 29.5 image changes/s on this PC with 543 160×120 images. Actual rates depend on hardware and files.
+
+## 한국어
+
+- 좌상단 눈 아이콘을 클릭하면 MooView 소개가 표시됩니다. 아무 곳이나 클릭하거나 Esc를 누르면 닫히며 뒤쪽 메뉴가 함께 실행되지 않습니다.
+- 자동 재생의 타이머 지연과 파일 목록 갱신 부담을 줄이고, 이미지가 실제로 그려지는 시점에 맞춰 넘기도록 수정했습니다.
+- 재생 중 FPS 변경을 즉시 반영하고, 하단에 실제 측정 FPS / 설정 FPS를 표시합니다. 큰 이미지에서 느려져도 이미지를 건너뛰지 않습니다.
 # MooView 1.7.0
 
 - Fixed clipped rail, toolbar and window-control icons by giving glyphs enough content space and including stroke widths inside their viewport.

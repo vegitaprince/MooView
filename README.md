@@ -2,7 +2,7 @@
 
 A compact Windows image viewer with an icon-only interface, Korean/English UI, animated GIF playback, multi-image layouts, and a small layered editor.
 
-Windows 10/11 x64. Download **MooView-Setup-1.7.0-x64.exe** from [Releases](https://github.com/vegitaprince/MooView/releases/latest). The installer includes .NET; no separate runtime installation is required. A portable ZIP is also available.
+Windows 10/11 x64. Download **MooView-Setup-1.8.0-x64.exe** from [Releases](https://github.com/vegitaprince/MooView/releases/latest). The installer includes .NET; no separate runtime installation is required. A portable ZIP is also available.
 
 ## Updates
 
@@ -17,6 +17,14 @@ Update preferences and the last check time are stored separately in `%LOCALAPPDA
 The interface uses neutral gray light/dark palettes. On first launch, including migration from older preferences, it follows Windows **app** light/dark mode and updates when Windows changes. Click the theme icon (or press D) to choose the opposite theme; that manual choice is remembered across restarts. Right-click the theme icon to resume following Windows. This does not change Windows settings. Drawing swatches remain colored so you can edit in color.
 
 Rail and toolbar buttons reserve space for their complete vector glyphs. Dropdowns keep content and the arrow in separate columns, including the editable FPS field, so localized labels and arrows do not overlap.
+
+## About and slideshow
+
+Click the eye logo at the top left for a brief introduction. Click anywhere inside the app to dismiss it; that click is consumed so it does not trigger a menu or image gesture behind the card. Escape or activating another application also dismisses it. Korean/English and the current theme apply to the card.
+
+Slideshow pacing uses absolute elapsed-time deadlines, requests a paint when due, and commits at most one image group per distinct WPF render. The rate can be changed during playback (0.1–30 fps). The status bar shows measured image commits / requested fps; changing the rate resets that measurement window. Hardware, image decoding and display refresh may limit presentation speed. Slow frames never cause bursts that skip image groups.
+
+A bounded 192 MiB/256-entry decoded image cache (plus currently displayed images) shares in-flight reads, preloads upcoming images across loop boundaries, and reuses GIF data. File-list/metadata updates are decoupled from image presentation. Manual seeking pauses playback. A local benchmark with 543 small 160×120 images improved observed 30-fps presentation from about 21.4 to 29.5 image changes per second; these are measurements on this PC, not a guarantee for all images/devices.
 
 ## Features
 
