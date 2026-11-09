@@ -2,7 +2,7 @@
 
 A compact Windows image viewer with an icon-only interface, Korean/English UI, animated GIF playback, multi-image layouts, and a small layered editor.
 
-Windows 10/11 x64. Download **MooView-Setup-1.9.1-x64.exe** from [Releases](https://github.com/vegitaprince/MooView/releases/latest). The installer includes .NET; no separate runtime installation is required. A portable ZIP is also available.
+Windows 10/11 x64. Download **MooView-Setup-1.9.2-x64.exe** from [Releases](https://github.com/vegitaprince/MooView/releases/latest). The installer includes .NET; no separate runtime installation is required. A portable ZIP is also available.
 
 ## Updates
 
@@ -53,6 +53,7 @@ A bounded 192 MiB/256-entry decoded image cache (plus currently displayed images
 
 - Drag the displayed image or selected sidebar files to Explorer and other programs. When zoomed in, Ctrl+drag exports the file; ordinary drag pans the image. The destination decides whether to copy or move; Ctrl/Shift follow its drop behavior. MooView refreshes after files move out.
 - Drag the sidebar size slider from compact filenames to small or large thumbnails. Shift selects a range, Ctrl toggles individual files, Alt clears a file, and clicking a selected file again clears it after mouse release. Sweep the checkboxes to select or clear a range.
+- The editor opens with freehand drawing selected. The copy icon beside Save or Ctrl+C copies the full current edit at document resolution, with strokes/text/cropping included. Bitmap and PNG clipboard formats are provided; PNG preserves transparency. Copying keeps unsaved edits intact. Text dialogs retain normal text copy.
 - The editor has six muted color swatches and a shared pen/eraser diameter slider. Select text directly and use its handles to resize/rotate. Drawing a crop rectangle asks for confirmation immediately.
 - Click the repeat icon to turn slideshow looping on or off.
 

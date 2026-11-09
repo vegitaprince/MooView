@@ -1,3 +1,14 @@
+# MooView 1.9.2
+
+- The editor starts with freehand drawing selected.
+- Added a vector copy button beside Save and Ctrl+C to copy the complete edited image, including strokes, text and cropping, at document resolution. Bitmap and PNG clipboard formats support common paste targets and PNG transparency. Copying leaves the document editable and does not mark it saved.
+- Added localized success/retry feedback. Text-entry dialogs retain normal text copying.
+
+## 한국어
+
+- 편집 모드 진입 시 자유 그리기가 기본으로 선택됩니다.
+- 저장 옆 복사 아이콘과 Ctrl+C로 현재 편집 결과를 클립보드에 복사합니다. PNG 투명도를 보존하며 복사 후에도 편집과 저장 상태를 유지합니다.
+
 # MooView 1.9.1
 
 - Expanded window dragging from the top toolbar to all noninteractive UI backgrounds: left rail gaps, sidebar labels/empty list, footer filename/status, placeholder, and image letterboxing.
