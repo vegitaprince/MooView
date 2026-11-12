@@ -5,7 +5,7 @@
   #define ReleaseDir "..\artifacts\release"
 #endif
 #ifndef AppVersion
-#define AppVersion "1.9.2"
+#define AppVersion "2.0.0"
 #endif
 [Setup]
 AppId={{D97071AE-3FF5-48D8-93CE-41BC4B769352}

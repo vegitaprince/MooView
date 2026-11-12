@@ -8,6 +8,7 @@ public partial class MainWindow
     void InitializeAbout()
     {
         AboutVersion.Text="v"+UpdateClient.CurrentVersion.ToString(3)+" · vegitaprince";
+        AboutButton.PreviewMouseRightButtonUp+=(_,e)=>{e.Handled=true;CloseAbout();using var stream=typeof(MainWindow).Assembly.GetManifestResourceStream("MooView.ThirdPartyNotices")!;using var reader=new System.IO.StreamReader(stream);Dialogs.Info(this,"MooView · Third-party notices",reader.ReadToEnd());};
         Deactivated+=(_,_)=>{CloseAbout();dismissAboutRelease=false;};
         PreviewMouseUp+=(_,e)=>{if(dismissAboutRelease){dismissAboutRelease=false;e.Handled=true;}};
     }

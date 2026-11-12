@@ -2,7 +2,27 @@
 
 A compact Windows image viewer with an icon-only interface, Korean/English UI, animated GIF playback, multi-image layouts, and a small layered editor.
 
-Windows 10/11 x64. Download **MooView-Setup-1.9.2-x64.exe** from [Releases](https://github.com/vegitaprince/MooView/releases/latest). The installer includes .NET; no separate runtime installation is required. A portable ZIP is also available.
+Windows 10/11 x64. Download **MooView-Setup-2.0.0-x64.exe** from [Releases](https://github.com/vegitaprince/MooView/releases/latest). The installer includes .NET and image decoders; no separate runtime installation is required. A portable ZIP is also available.
+
+## A/B wipe comparison
+
+Drop a second image onto the displayed image to enter comparison immediately, or click the split-image icon beside Edit (C) and choose image B. With an empty viewer, select two files in that dialog or drop two images together. Dropping files on the sidebar or outside the actual image retains ordinary file opening. The current image becomes A; a single dropped image becomes B. GIF comparison uses its first frame.
+
+Drag the divider to reveal A on the left and B on the right. Wheel zooms around the pointer; drag the image to pan both together. Fit/fill/width/1:1 and the zoom minimap share the same transform. Left/right adjusts the divider by 1% (Shift: 10%); Home/End reveals one side completely. C or the compare toggle returns to browsing. Escape leaves fullscreen first, then leaves comparison. Slideshow and folder seeking pause while comparing.
+
+Comparison controls open/replace A and B, swap them, toggle color/B&W, isolate or combine RGB channels, adjust A opacity, and adjust brightness/contrast separately for A and B. Brightness/contrast range from 0–200%, initially 100%. Reset restores those four adjustments. Ctrl+V pastes an image or image file as B while comparing. EXR sources expose their own part/layer/channel selectors. The bottom bar identifies both filenames.
+
+The save icon exports PNG/JPEG at A's original pixel dimensions, including the divider position, A opacity, channels and tone adjustments. B is contained without stretching on A's canvas; uncovered areas are black. The divider and minimap are not burned in. Pan/zoom only affect inspection; export uses the complete canvas.
+
+## EXR and Photoshop files
+
+Open `.exr`, `.psd` and `.psb` directly, from the file dialog or by double-clicking after choosing MooView as the default for that extension. The installer registers these extensions in Windows Open With.
+
+EXR uses OpenEXR 3.4.18 and supports flat scanline/tiled files, multipart files, HALF/FLOAT/UINT channels and named layers. Choose the RGB layer or an individual grayscale channel from the layer selector; multipart names are included. The exposure slider ranges from −10 to +10 EV, with an optional sRGB display transfer. The information panel lists every part/channel, numeric type and sampling. Tiled files preview their base resolution. Deep sample data cannot be flattened by this viewer; choose a flat part when present. Data-window size and decode-memory limits return an error rather than allocating without bounds.
+
+EXR preview assumes linear RGB with sRGB/Rec.709 primaries; it is a display preview, not an OCIO/ACES color-managed grading tool. NaN/negative values display black and highlights clip at display white. Exposure helps inspect HDR highlights. The source file and its HDR values are never changed; edits/conversions use the currently decoded display preview.
+
+PSD/PSB opening uses the saved merged composite (including 8/16-bit documents). Photoshop layer editing/selection is not provided. A document saved without a compatible merged preview may not display as expected. Exported images are flattened. Third-party licenses are embedded in the program; right-click the eye logo to read them.
 
 ## Updates
 
@@ -77,13 +97,13 @@ Text and strokes stay editable during the open editor session, including after s
 
 ## Build
 
-Install .NET 10 SDK and Inno Setup 6, then run:
+Install .NET 10 SDK, Visual Studio desktop C++ build tools (MSVC/x64 and CMake 3.24+) and Inno Setup 6, then run:
 
 ```powershell
 ./build.ps1
 ```
 
-Run tests with `MooView.exe --ui-test`. This also runs the image-processing tests. Test files are created beside the executable. Build outputs are under `artifacts/`.
+The build first compiles `MooViewExr.dll` from pinned OpenEXR source and restores Magick.NET 14.17.1. The native bridge statically links its dependencies and MSVC runtime. `./build-native.ps1` builds only that component. Run tests with `MooView.exe --ui-test`; `--advanced-test` runs EXR/PSD/comparison checks alone. Fixtures can be regenerated with the native `ExrFixtures` tool. Test files are created beside the executable. Build outputs are under `artifacts/`.
 
 ## 한국어
 

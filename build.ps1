@@ -1,6 +1,7 @@
 param([string]$InnoCompiler = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe")
 $ErrorActionPreference = 'Stop'
 $root = $PSScriptRoot
+& "$root/build-native.ps1"
 $version = ([xml](Get-Content -Raw "$root\Source\MooView.csproj")).Project.PropertyGroup.Version
 if ($env:GITHUB_REF -like 'refs/tags/*' -and $env:GITHUB_REF -ne "refs/tags/v$version") { throw 'Release tag must match the project version' }
 $app = Join-Path $root 'artifacts\app'

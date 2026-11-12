@@ -42,7 +42,7 @@ public partial class MainWindow
     internal static bool TryFps(string text,out double fps)=>(double.TryParse(text,NumberStyles.Float,CultureInfo.CurrentCulture,out fps)||double.TryParse(text,NumberStyles.Float,CultureInfo.InvariantCulture,out fps))&&double.IsFinite(fps)&&fps>=.1&&fps<=30;
     void TogglePlay(object s,RoutedEventArgs e)
     {
-        if(playing){Stop();return;}if(files.Count==0)return;
+        if(playing){Stop();return;}if(files.Count==0 || Comparing)return;
         if(!TryFps(FpsInput.Text,out double fps)){Status(L10n.T("InvalidFps"));return;}
         playing=true;playbackGeneration++;slideshowClock.Reset(fps);PresentedFrames=0;ResetPlaybackStats();
         CompositionTarget.Rendering+=SlideshowRendering;slideshowPulse.Start();

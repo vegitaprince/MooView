@@ -38,6 +38,7 @@ public partial class MainWindow
         {
             if(current is ButtonBase or TextBoxBase or PasswordBox or ComboBox or RangeBase or Thumb or ScrollBar or ListBoxItem or TreeViewItem or MenuItem)return false;
         }
+        if(ParentOf<ComparePane>(source) is ComparePane compare && compare.IsImageInteraction(TranslatePoint(point,compare)))return false;
         var pane=ParentOf<ImagePane>(source);
         if(pane!=null&&pane.Visibility==Visibility.Visible&&pane.IsImageInteraction(TranslatePoint(point,pane)))return false;
         return true;

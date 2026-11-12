@@ -2,9 +2,14 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType><TargetFramework>net10.0-windows</TargetFramework>
     <UseWPF>true</UseWPF><Nullable>enable</Nullable><ImplicitUsings>enable</ImplicitUsings>
-    <AssemblyName>MooView</AssemblyName><Version>1.9.2</Version><Product>MooView</Product><Description>이미지 뷰어 · GIF · 편집</Description>
+    <AssemblyName>MooView</AssemblyName><Version>2.0.0</Version><Product>MooView</Product><Description>이미지 뷰어 · A/B 비교 · EXR · 편집</Description>
     <DebugType>none</DebugType><ApplicationManifest>app.manifest</ApplicationManifest><ApplicationIcon>Assets/MooView.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup><Resource Include="Assets/MooView.ico" /><Resource Include="Assets/MooView.png" /></ItemGroup>
+  <ItemGroup><PackageReference Include="Magick.NET-Q8-x64" Version="14.17.1" />
+    <Content Include="../native/bin/MooViewExr.dll" Link="MooViewExr.dll" CopyToOutputDirectory="PreserveNewest" />
+    <EmbeddedResource Include="../THIRD-PARTY-NOTICES.txt" LogicalName="MooView.ThirdPartyNotices" />
+  </ItemGroup>
+  <ItemGroup><EmbeddedResource Include="Assets/Tests/*.exr" LogicalName="MooView.Fixtures.%(Filename)%(Extension)" /></ItemGroup>
 </Project>
 

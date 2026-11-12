@@ -1,3 +1,19 @@
+# MooView 2.0.0
+
+- Added native A/B sliding wipe comparison: drop an image onto the current image, or toggle Compare and select B. Empty viewers accept two images together.
+- Shared fit/1:1/zoom/pan and minimap; A/B replacement/swap, RGB channel selection, color/B&W, A opacity and separate brightness/contrast; reset and full-resolution PNG/JPEG comparison export. Clipboard paste replaces B. Comparison pauses folder playback and keeps fullscreen chrome behavior.
+- Added EXR scanline/tiled/multipart decoding with OpenEXR 3.4.18, named RGB layers and individual channels, ±10 EV exposure, optional sRGB display transfer, channel/part metadata and Unicode filenames. Deep-only images report a controlled unsupported-preview error.
+- Added PSD/PSB merged-image previews using Magick.NET 14.17.1; no Photoshop layer editing.
+- Bundled both decoders in installed/portable packages, registered new extensions with Open With, and embedded required licenses (right-click the eye logo).
+- EXR/PSD pixel fixtures and comparison tests cover 12 EXR compression modes, HALF/FLOAT, multipart/tiled/offset windows, layer/channel selection, RGB filtering, opacity, export, drag entry, zoom/minimap, switching modes and the existing viewer/updater regressions.
+
+## 한국어
+
+- 현재 이미지에 다른 이미지를 드롭하거나 비교 아이콘을 눌러 A/B 슬라이드 비교를 시작합니다.
+- 확대·이동 동기화, 미니맵, A/B 교체, RGB/흑백, 불투명도, 개별 밝기·대비 조절과 비교 이미지 저장을 제공합니다.
+- EXR의 파트·레이어·채널 선택과 노출 조절을 추가했습니다. PSD/PSB는 저장된 합성 이미지를 엽니다.
+- 설치형·포터블에 디코더를 포함하며, 기존 업데이트 방식을 유지합니다.
+
 # MooView 1.9.2
 
 - The editor starts with freehand drawing selected.
