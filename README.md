@@ -2,7 +2,7 @@
 
 A compact Windows image viewer with an icon-only interface, Korean/English UI, animated GIF playback, multi-image layouts, and a small layered editor.
 
-Windows 10/11 x64. Download **MooView-Setup-2.0.0-x64.exe** from [Releases](https://github.com/vegitaprince/MooView/releases/latest). The installer includes .NET and image decoders; no separate runtime installation is required. A portable ZIP is also available.
+Windows 10/11 x64. [Download the portable ZIP](https://github.com/vegitaprince/MooView/releases/download/v2.0.0/MooView-Portable-2.0.0-x64.zip), extract the entire folder, and run `MooView.exe`. The package includes .NET and the image decoders.
 
 ## A/B wipe comparison
 
@@ -16,7 +16,7 @@ The save icon exports PNG/JPEG at A's original pixel dimensions, including the d
 
 ## EXR and Photoshop files
 
-Open `.exr`, `.psd` and `.psb` directly, from the file dialog or by double-clicking after choosing MooView as the default for that extension. The installer registers these extensions in Windows Open With.
+Open `.exr`, `.psd` and `.psb` directly, from the file dialog or by double-clicking after choosing MooView as the default for that extension.
 
 EXR uses OpenEXR 3.4.18 and supports flat scanline/tiled files, multipart files, HALF/FLOAT/UINT channels and named layers. Choose the RGB layer or an individual grayscale channel from the layer selector; multipart names are included. The exposure slider ranges from −10 to +10 EV, with an optional sRGB display transfer. The information panel lists every part/channel, numeric type and sampling. Tiled files preview their base resolution. Deep sample data cannot be flattened by this viewer; choose a flat part when present. Data-window size and decode-memory limits return an error rather than allocating without bounds.
 
@@ -28,17 +28,17 @@ PSD/PSB opening uses the saved merged composite (including 8/16-bit documents). 
 
 Use the update icon near the bottom of the left rail. The update window identifies the current copy as **Installed** or **Portable** and selects the matching stable release asset. **Check now** is always available. Automatic checks are enabled by default, run on startup when due, and are revisited while the app remains open (at most one network check per 12 hours).
 
-**Automatically download updates and apply on app exit** is off by default. When enabled, MooView downloads the matching installer or portable ZIP, verifies its GitHub SHA-256 digest, and prepares an independent update helper while you keep using the app. It applies only after a normal app exit and after all other MooView processes in the same folder have exited. It does not force-close windows or restart the app. Windows shutdown/restart defers application to a later normal exit. Turning the option off also prevents an already staged update from applying automatically, including when a helper is waiting for another window. Failed/cancelled/incomplete downloads never become pending updates.
+**Automatically download updates and apply on app exit** is off by default. When enabled, MooView downloads the portable ZIP for a portable copy, verifies its GitHub SHA-256 digest, and prepares an independent update helper while you keep using the app. It applies only after a normal app exit and after all other MooView processes in the same folder have exited. It does not force-close windows or restart the app. Windows shutdown/restart defers application to a later normal exit. Turning the option off also prevents an already staged update from applying automatically, including when a helper is waiting for another window. Failed/cancelled/incomplete downloads never become pending updates.
 
 Manual **Update and restart** remains available. Save edits and close other MooView windows first. A verified staged update is reused and the current image is reopened after a manual update. Automatic download progress does not interrupt fullscreen or editing with a dialog.
 
 Portable updates stay portable: they use a manifest-bearing ZIP, replace only known program/runtime files, preserve images/settings/unrelated files in the same folder, and create no installer/uninstaller or file associations. Manifest paths, ZIP links/duplicates/expanded size, file lengths and individual SHA-256 digests are checked. Replacements use a backup transaction; ordinary file replacement errors restore the prior program files. Unchanged obsolete files tracked by the prior manifest can be removed; unrelated files are retained. The target folder must remain present and writable.
 
-**Migration:** portable versions 1.8.0 and earlier need the 1.9.0 portable ZIP once; their old updater only understands installers. Installed copies can use the normal installer update. The installer excludes/removes the portable marker so it remains an installed copy.
+**Migration:** If you have an installed copy or portable version 1.8.0 or earlier, extract the current portable ZIP into a new writable folder and launch MooView from there. Portable versions 1.9.0 and later can use the in-app updater.
 
 Preferences, available-release metadata and verified pending handoffs are scoped to the application folder under `%LOCALAPPDATA%\MooView`. This keeps copies in separate folders from inheriting each other's consent or packages. Existing viewer settings keep their existing location. Packages/helpers/logs are cached under `Updates` for retries and troubleshooting; interrupted Windows shutdown leaves the update pending. No GitHub login or token is required.
 
-Distribution builds use `--package-portable` to create `MooView.files.json` plus a portable marker and an archive containing exactly the declared payload. Both `MooView-Setup-X.Y.Z-x64.exe` and `MooView-Portable-X.Y.Z-x64.zip` must be attached to a stable `vX.Y.Z` release with GitHub asset digests. The build checks tag/project-version consistency. SHA-256 detects damaged downloads; it does not replace publisher code signing.
+Distribution builds use `--package-portable` to create `MooView.files.json` plus a portable marker and an archive containing exactly the declared payload. Attach the portable ZIP to the matching stable release with its GitHub asset digest. The build checks tag/project-version consistency. SHA-256 detects damaged downloads; it does not replace publisher code signing.
 
 ## Moving the window
 
@@ -89,7 +89,7 @@ A bounded 192 MiB/256-entry decoded image cache (plus currently displayed images
 
 ## Default image app
 
-The installer registers MooView with Windows. Use the settings icon in MooView, or right-click an image → Open with → Choose another app → MooView → Always. Windows controls the final default selection per extension.
+Use the settings icon in MooView, or right-click an image → Open with → Choose another app → MooView → Always. Windows controls the final default selection per extension.
 
 ## Editing notes
 
@@ -107,7 +107,7 @@ The build first compiles `MooViewExr.dll` from pinned OpenEXR source and restore
 
 ## 한국어
 
-[최신 릴리스](https://github.com/vegitaprince/MooView/releases/latest)의 설치 파일을 실행하세요. .NET 런타임을 포함하며 사용자 계정에 설치됩니다. 왼쪽 아래 언어 아이콘으로 한영 전환, Tab으로 파일 목록 표시/숨김, 휠 클릭으로 전체화면을 전환합니다.
+[포터블 ZIP](https://github.com/vegitaprince/MooView/releases/download/v2.0.0/MooView-Portable-2.0.0-x64.zip) 전체를 풀고 `MooView.exe`를 실행하세요. .NET 런타임이 포함되어 있습니다. 왼쪽 아래 언어 아이콘으로 한영 전환, Tab으로 파일 목록 표시/숨김, 휠 클릭으로 전체화면을 전환합니다.
 
 텍스트를 추가한 뒤 선택 도구로 클릭하면 이동할 수 있습니다. 모서리 사각형은 크기, 위쪽 원은 회전을 조절합니다. 더블클릭으로 내용을 수정하고 Delete로 삭제할 수 있습니다. 지우개는 그린 선의 일부만 지우며 원본 이미지를 변경하지 않습니다.
 
