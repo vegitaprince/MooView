@@ -1,4 +1,4 @@
-param([string]$InnoCompiler = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe")
+param([switch]$IncludeInstaller, [string]$InnoCompiler = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe")
 $ErrorActionPreference = 'Stop'
 $root = $PSScriptRoot
 & "$root/build-native.ps1"
@@ -19,6 +19,7 @@ $package.ArgumentList.Add("$release\MooView-Portable-$version-x64.zip")
 $packager = [Diagnostics.Process]::Start($package)
 $packager.WaitForExit()
 if ($packager.ExitCode) { throw 'Portable packaging failed' }
+if (-not $IncludeInstaller) { return }
 & $InnoCompiler "/DAppVersion=$version" "/DPublishDir=$app" "/DReleaseDir=$release" "$root\packaging\MooView.iss"
 if ($LASTEXITCODE) { throw 'Installer compilation failed' }
 Get-ChildItem $release -File | Where-Object Extension -in '.exe','.zip' | Get-FileHash -Algorithm SHA256 | ForEach-Object { "$($_.Hash.ToLower())  $([IO.Path]::GetFileName($_.Path))" } | Set-Content "$release\SHA256SUMS.txt" -Encoding ascii
