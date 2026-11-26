@@ -2,7 +2,13 @@
 
 A compact Windows image viewer with an icon-only interface, Korean/English UI, animated GIF playback, multi-image layouts, and a small layered editor.
 
-Windows 10/11 x64. [Download the portable ZIP](https://github.com/vegitaprince/MooView/releases/download/v2.0.0/MooView-Portable-2.0.0-x64.zip), extract the entire folder, and run `MooView.exe`. The package includes .NET and the image decoders.
+Windows 10/11 x64. [Download the portable ZIP](https://github.com/vegitaprince/MooView/releases/download/v2.0.1/MooView-Portable-2.0.1-x64.zip), extract the entire folder, and run `MooView.exe`. The package includes .NET and the image decoders.
+
+## Batch rename numbering
+
+Select files in the sidebar and click Rename. Choose the filename pattern, **Start number** (0 or greater), and **Number of digits** (1–12). The preview updates as you type. For example, `Image_{n}` with start 12 and 5 digits produces `Image_00012`, `Image_00013`, and so on, preserving each original extension. Digit width is a minimum: 98, 99, 100 with width 2 never truncates a number. The dialog reuses your choices during the current app session; a new session starts at 1 with 3 digits. Continue shows the complete confirmation before any files change. Invalid numbers, sequence overflow and existing/duplicate target names are rejected.
+
+파일 이름 바꾸기에서 시작 번호와 숫자 자리수(1~12자리)를 지정할 수 있습니다. 예: 시작 12, 5자리 → `Image_00012`, `Image_00013`. 미리보기와 최종 확인 후 적용하며 확장자는 유지합니다.
 
 ## A/B wipe comparison
 
@@ -107,7 +113,7 @@ The build first compiles `MooViewExr.dll` from pinned OpenEXR source and restore
 
 ## 한국어
 
-[포터블 ZIP](https://github.com/vegitaprince/MooView/releases/download/v2.0.0/MooView-Portable-2.0.0-x64.zip) 전체를 풀고 `MooView.exe`를 실행하세요. .NET 런타임이 포함되어 있습니다. 왼쪽 아래 언어 아이콘으로 한영 전환, Tab으로 파일 목록 표시/숨김, 휠 클릭으로 전체화면을 전환합니다.
+[포터블 ZIP](https://github.com/vegitaprince/MooView/releases/download/v2.0.1/MooView-Portable-2.0.1-x64.zip) 전체를 풀고 `MooView.exe`를 실행하세요. .NET 런타임이 포함되어 있습니다. 왼쪽 아래 언어 아이콘으로 한영 전환, Tab으로 파일 목록 표시/숨김, 휠 클릭으로 전체화면을 전환합니다.
 
 텍스트를 추가한 뒤 선택 도구로 클릭하면 이동할 수 있습니다. 모서리 사각형은 크기, 위쪽 원은 회전을 조절합니다. 더블클릭으로 내용을 수정하고 Delete로 삭제할 수 있습니다. 지우개는 그린 선의 일부만 지우며 원본 이미지를 변경하지 않습니다.
 

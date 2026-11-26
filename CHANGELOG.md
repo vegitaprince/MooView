@@ -1,3 +1,15 @@
+# MooView 2.0.1
+
+- Added a batch rename dialog with configurable starting number and digit width (1–12), a live sample preview, and remembered choices within the current session.
+- Keep the full confirmation, original extensions and transactional rename behavior. Reject invalid integers, sequence overflow and target name collisions; numbers longer than the chosen width are never truncated.
+- Added focused numbering/UI/filesystem checks, including zero start, a 99→100 boundary, twelve-digit padding, collision prevention and byte-preserving rename.
+
+## 한국어
+
+- 이미지 이름 바꾸기에 시작 번호와 숫자 자리수 선택을 추가했습니다.
+- 설정을 바꾸면 미리보기에 바로 반영됩니다. 시작 12, 5자리라면 `Image_00012`, `Image_00013`으로 번호가 붙습니다.
+- 기존 확장자와 최종 확인 단계를 유지하며 잘못된 숫자나 이름 중복을 차단합니다.
+
 # MooView 2.0.0
 
 - Added native A/B sliding wipe comparison: drop an image onto the current image, or toggle Compare and select B. Empty viewers accept two images together.
